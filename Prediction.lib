@@ -66,10 +66,10 @@
 
 --]]
 
-local Version = 1.30
+local Version = 0.1
 
 local function AutoUpdate()
-    local url = "https://raw.githubusercontent.com/Ark223/Bruhwalker/main/"
+    local url = "https://raw.githubusercontent.com/Banthors/Bruhwalker/main/"
     local result = http:get(url .. "Prediction.version")
     if result and result ~= "" and tonumber(result) > Version then
         http:download_file(url .. "Prediction.lib", "Prediction.lib")
