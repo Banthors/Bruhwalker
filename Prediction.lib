@@ -66,15 +66,25 @@
 
 --]]
 
-local Version = 0.1
+local Version = 0.2
 
 local function AutoUpdate()
     local url = "https://raw.githubusercontent.com/Banthors/Bruhwalker/main/"
-    local result = http:get(url .. "Prediction.version")
-    if result and result ~= "" and tonumber(result) > Version then
-        http:download_file(url .. "Prediction.lib", "Prediction.lib")
-        console:log("Prediction library has been updated successfully!")
-    end
+    http:get_async(url .. "Prediction.version", function(success, response)
+        if not success then
+            return console:log("[GET ERR] Prediction.lib")
+        end
+
+        if response and response ~= "" and tonumber(response) > Version then
+            http:download_file_async(url .. "Prediction.lib", "Prediction.lib", function(success2)
+                if not success2 then
+                    return console:log("[DOWNLOAD ERR] Prediction.lib")
+                end
+
+                client:force_reload()
+            end)
+        end
+    end)
 end
 
 local Class = function(...)
